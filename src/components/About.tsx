@@ -46,33 +46,6 @@ export default function About() {
           skills={['Mathematics', 'Computing', 'Optimization', 'Problem Solving']}
         />
       </div>
-
-      <div className="mt-20">
-        <h3 className="text-2xl font-serif font-bold mb-8 text-center">My Journey</h3>
-        <div className="relative border-l border-white/10 ml-4 md:ml-1/2 md:-translate-x-px space-y-12">
-          <TimelineItem 
-            year="2026 - Present"
-            title="Campus Ambassador"
-            company="INTERSHALA"
-            description="Leading campus initiatives and promoting student opportunities."
-            side="left"
-          />
-          <TimelineItem 
-            year="2025"
-            title="Digital Marketing Intern"
-            company="Corizo Edutech Pvt. Ltd."
-            description="Managed digital campaigns and analyzed engagement metrics."
-            side="right"
-          />
-          <TimelineItem 
-            year="2025 - 2029"
-            title="B.Tech, Mathematics and Computing"
-            company="Madhav Institute of Technology and Science"
-            description="Pursuing undergraduate degree with a focus on computational mathematics."
-            side="left"
-          />
-        </div>
-      </div>
     </Section>
   );
 }
@@ -93,20 +66,6 @@ function SkillCard({ title, icon, skills }: { title: string; icon: ReactNode; sk
           </span>
         ))}
       </div>
-    </div>
-  );
-}
-
-function TimelineItem({ year, title, company, description, side }: { year: string; title: string; company: string; description: string; side: 'left' | 'right' }) {
-  return (
-    <div className={`relative pl-8 md:pl-0 ${side === 'left' ? 'md:pr-12 md:text-right md:ml-0 md:mr-auto' : 'md:pl-12 md:text-left md:ml-auto md:mr-0'} md:w-1/2`}>
-      <div className="absolute top-0 left-0 md:left-auto md:right-0 w-3 h-3 -translate-x-[5px] md:translate-x-1/2 rounded-full bg-accent border-4 border-[#050505]" 
-           style={side === 'right' ? { left: '-1px', right: 'auto' } : {}} 
-      />
-      <span className="text-accent text-sm font-mono mb-1 block">{year}</span>
-      <h4 className="text-xl font-bold text-white mb-1">{title}</h4>
-      <h5 className="text-gray-400 text-sm mb-2">{company}</h5>
-      <p className="text-gray-500 text-sm leading-relaxed">{description}</p>
     </div>
   );
 }
