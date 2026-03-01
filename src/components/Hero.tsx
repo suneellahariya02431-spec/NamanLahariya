@@ -21,6 +21,30 @@ export default function Hero() {
       </div>
 
       <div className="max-w-4xl mx-auto px-4 text-center">
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.8 }}
+          className="mb-8 relative inline-block"
+        >
+          <div className="w-40 h-40 md:w-48 md:h-48 rounded-2xl overflow-hidden border-2 border-white/10 shadow-2xl mx-auto relative z-10 bg-[#1a1a1a]">
+             <img 
+               src="https://github.com/namanartist.png" 
+               alt="Naman Lahariya" 
+               className="w-full h-full object-cover"
+               referrerPolicy="no-referrer"
+               onError={(e) => {
+                 const target = e.currentTarget;
+                 // Fallback to generic avatar if GitHub fails
+                 target.src = "https://ui-avatars.com/api/?name=Naman+Lahariya&background=random";
+               }}
+             />
+          </div>
+          {/* Decorative elements behind image */}
+          <div className="absolute -top-4 -right-4 w-20 h-20 border border-accent/20 rounded-full z-0" />
+          <div className="absolute -bottom-4 -left-4 w-20 h-20 border border-white/5 rounded-full z-0" />
+        </motion.div>
+
         <motion.h1
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
