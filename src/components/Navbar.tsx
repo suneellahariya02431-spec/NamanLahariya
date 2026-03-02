@@ -44,6 +44,7 @@ export default function Navbar() {
         visible: { y: 0 },
         hidden: { y: "-100%" },
       }}
+      initial="hidden"
       animate={hidden ? "hidden" : "visible"}
       transition={{ duration: 0.35, ease: "easeInOut" }}
       className={`fixed top-0 left-0 right-0 z-40 flex justify-center pt-6 px-4 pointer-events-none`}

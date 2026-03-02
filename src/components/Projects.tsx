@@ -11,7 +11,6 @@ const projects = [
     category: "Mobile Apps",
     description: "AI-powered smart waste management application featuring waste classification, real-time garbage vehicle tracking, and automated digital challan generation. Implemented a Green Points ecosystem to encourage citizen participation.",
     tech: ["AI/ML", "Geolocation", "React Native", "Node.js"],
-    image: "https://picsum.photos/seed/cleanup/800/600",
     links: { demo: "https://clean-up-eea39809.base44.app/", github: "https://github.com/namanartist" }
   },
   {
@@ -20,7 +19,6 @@ const projects = [
     category: "Web Development", // Categorized as Web Dev for demo purposes, or could be 'Other'
     description: "Applied differential calculus to optimize tank dimensions, minimizing material usage while maintaining required volume. Developed mathematical models to achieve cost-efficient and structurally optimal designs.",
     tech: ["Calculus", "C++", "Optimization", "Modeling"],
-    image: "https://picsum.photos/seed/math/800/600",
     links: { demo: "https://drive.google.com/file/d/14Uy3gxO3UKVFWD2vjh7aPZDBr6UJwFtd/view", github: "https://github.com/namanartist" }
   },
   {
@@ -29,7 +27,6 @@ const projects = [
     category: "Web Development",
     description: "A responsive, dark-themed portfolio website built with React, Tailwind CSS, and Framer Motion. Features smooth animations and a clean UI.",
     tech: ["React", "Tailwind CSS", "Framer Motion"],
-    image: "https://picsum.photos/seed/portfolio/800/600",
     links: { demo: "#", github: "https://github.com/namanartist" }
   }
 ];
@@ -102,15 +99,6 @@ export default function Projects() {
               className="group relative rounded-2xl overflow-hidden bg-[#121212] border border-white/5"
               onMouseEnter={playHover}
             >
-              <div className="aspect-video overflow-hidden">
-                <img 
-                  src={project.image} 
-                  alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100"
-                  referrerPolicy="no-referrer"
-                />
-              </div>
-              
               <div className="p-6 relative z-10">
                 <div className="flex justify-between items-start mb-4">
                   <div>

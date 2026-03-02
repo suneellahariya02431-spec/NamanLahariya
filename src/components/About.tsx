@@ -1,8 +1,24 @@
 import Section from './Section';
 import { Code2, Database, Layout, Terminal, Cpu, Brain } from 'lucide-react';
 import { ReactNode } from 'react';
+import { motion } from 'motion/react';
 
 export default function About() {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+  };
+
   return (
     <Section id="about" className="relative">
       <div className="text-center mb-16">
@@ -14,45 +30,60 @@ export default function About() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <motion.div 
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-50px" }}
+        variants={containerVariants}
+      >
         <SkillCard 
+          variants={itemVariants}
           title="Languages" 
           icon={<Code2 className="text-accent" size={24} />}
           skills={['C++', 'JavaScript', 'Java', 'Python']}
         />
         <SkillCard 
+          variants={itemVariants}
           title="Frontend" 
           icon={<Layout className="text-blue-400" size={24} />}
           skills={['HTML5', 'CSS3', 'React', 'Tailwind CSS']}
         />
         <SkillCard 
+          variants={itemVariants}
           title="Backend" 
           icon={<Database className="text-green-400" size={24} />}
           skills={['Node.js', 'Express', 'SQL', 'MongoDB']}
         />
         <SkillCard 
+          variants={itemVariants}
           title="Tools" 
           icon={<Terminal className="text-purple-400" size={24} />}
           skills={['Git', 'GitHub', 'VS Code', 'Postman']}
         />
         <SkillCard 
+          variants={itemVariants}
           title="Core Concepts" 
           icon={<Cpu className="text-red-400" size={24} />}
           skills={['Data Structures', 'Algorithms', 'OOPs', 'DBMS']}
         />
         <SkillCard 
+          variants={itemVariants}
           title="Specialization" 
           icon={<Brain className="text-yellow-600" size={24} />}
           skills={['Mathematics', 'Computing', 'Optimization', 'Problem Solving']}
         />
-      </div>
+      </motion.div>
     </Section>
   );
 }
 
-function SkillCard({ title, icon, skills }: { title: string; icon: ReactNode; skills: string[] }) {
+function SkillCard({ title, icon, skills, variants }: { title: string; icon: ReactNode; skills: string[]; variants?: any }) {
   return (
-    <div className="p-6 rounded-2xl bg-[#121212] border border-white/5 hover:border-accent/30 transition-all duration-300 group">
+    <motion.div 
+      variants={variants}
+      className="p-6 rounded-2xl bg-[#121212] border border-white/5 hover:border-accent/30 transition-all duration-300 group"
+    >
       <div className="flex items-center gap-3 mb-4">
         <div className="p-2 rounded-lg bg-white/5 group-hover:bg-white/10 transition-colors">
           {icon}
@@ -66,6 +97,6 @@ function SkillCard({ title, icon, skills }: { title: string; icon: ReactNode; sk
           </span>
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 }

@@ -81,12 +81,6 @@ export default function Contact() {
                 href="mailto:namanalahariya@gmail.com"
               />
               <ContactItem 
-                icon={<Phone size={20} />}
-                label="Phone"
-                value="+91 9174427447"
-                href="tel:+919174427447"
-              />
-              <ContactItem 
                 icon={<MapPin size={20} />}
                 label="Location"
                 value="Gwalior, India"
