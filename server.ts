@@ -162,6 +162,11 @@ async function startServer() {
   } else {
     // In production, serve static files from dist
     app.use(express.static('dist'));
+
+    // Handle SPA routing - serve index.html for all non-API routes
+    app.get('*', (req, res) => {
+      res.sendFile('index.html', { root: 'dist' });
+    });
   }
 
   app.listen(PORT, '0.0.0.0', () => {
