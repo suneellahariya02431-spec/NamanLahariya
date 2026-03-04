@@ -5,6 +5,9 @@ import { HelmetProvider } from 'react-helmet-async';
 import Loader from './components/Loader';
 import Home from './pages/Home';
 import BlogPost from './pages/BlogPost';
+import Login from './pages/Login';
+import Admin from './pages/Admin';
+import ProtectedRoute from './components/ProtectedRoute';
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -20,8 +23,17 @@ export default function App() {
           ) : (
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/blog" element={<Home />} /> {/* For now, blog list is on home */}
+              <Route path="/blog" element={<Home />} />
               <Route path="/blog/:id" element={<BlogPost />} />
+              <Route path="/login" element={<Login />} />
+              <Route 
+                path="/admin" 
+                element={
+                  <ProtectedRoute>
+                    <Admin />
+                  </ProtectedRoute>
+                } 
+              />
             </Routes>
           )}
         </AnimatePresence>

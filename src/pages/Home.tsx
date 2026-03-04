@@ -5,6 +5,8 @@ import Projects from '../components/Projects';
 import BlogSection from '../components/BlogSection';
 import Contact from '../components/Contact';
 import Navbar from '../components/Navbar';
+import Certifications from '../components/Certifications';
+import BackToTop from '../components/BackToTop';
 
 export default function Home() {
   return (
@@ -15,9 +17,11 @@ export default function Home() {
         <About />
         <Journey />
         <Projects />
+        <Certifications />
         <BlogSection />
         <Contact />
       </main>
+      <BackToTop />
     </div>
   );
 }
