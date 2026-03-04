@@ -1,25 +1,23 @@
 import Section from './Section';
 import { motion } from 'motion/react';
 import { Award, ExternalLink } from 'lucide-react';
-import { useState, useEffect } from 'react';
 
-interface Certification {
-  id: number;
-  title: string;
-  issuer: string;
-  link: string;
-}
+const certifications = [
+  {
+    id: 1,
+    title: "Software Engineering Job Simulation",
+    issuer: "The Forage",
+    link: "https://www.theforage.com/completion-certificates/Sj7temL583QAYpHXD/E6McHJDKsQYh79moz_Sj7temL583QAYpHXD_69a7c4dbf44d771db9856097_1772603982134_completion_certificate.pdf"
+  },
+  {
+    id: 2,
+    title: "Cyber Job Simulation",
+    issuer: "The Forage",
+    link: "https://www.theforage.com/completion-certificates/9PBTqmSxAf6zZTseP/E9pA6qsdbeyEkp3ti_9PBTqmSxAf6zZTseP_69a7c4dbf44d771db9856097_1772605652041_completion_certificate.pdf"
+  }
+];
 
 export default function Certifications() {
-  const [certifications, setCertifications] = useState<Certification[]>([]);
-
-  useEffect(() => {
-    fetch('/api/certifications')
-      .then(res => res.json())
-      .then(data => setCertifications(data))
-      .catch(err => console.error('Failed to fetch certifications:', err));
-  }, []);
-
   return (
     <Section id="certifications" className="relative">
       <div className="text-center mb-16">

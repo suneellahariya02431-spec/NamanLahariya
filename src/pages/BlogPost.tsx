@@ -3,43 +3,13 @@ import { Helmet } from 'react-helmet-async';
 import { ArrowLeft, Calendar, User, Clock } from 'lucide-react';
 import { motion } from 'motion/react';
 import ReactMarkdown from 'react-markdown';
+import { blogPosts } from '../components/BlogSection';
 import Navbar from '../components/Navbar';
 import Contact from '../components/Contact';
-import { useState, useEffect } from 'react';
-
-interface BlogPostData {
-  id: number;
-  title: string;
-  excerpt: string;
-  date: string;
-  author: string;
-  content: string;
-  image?: string;
-}
 
 export default function BlogPost() {
   const { id } = useParams();
-  const [post, setPost] = useState<BlogPostData | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch(`/api/articles/${id}`)
-      .then(res => {
-        if (!res.ok) throw new Error('Post not found');
-        return res.json();
-      })
-      .then(data => setPost(data))
-      .catch(err => console.error('Failed to fetch article:', err))
-      .finally(() => setLoading(false));
-  }, [id]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[#050505] text-white">
-        <div>Loading...</div>
-      </div>
-    );
-  }
+  const post = blogPosts.find(p => p.id === id);
 
   if (!post) {
     return (
@@ -59,7 +29,7 @@ export default function BlogPost() {
         <meta name="description" content={post.excerpt} />
         <meta property="og:title" content={post.title} />
         <meta property="og:description" content={post.excerpt} />
-        {post.image && <meta property="og:image" content={post.image} />}
+        <meta property="og:image" content={post.image} />
         <meta property="og:type" content="article" />
       </Helmet>
 
@@ -80,16 +50,14 @@ export default function BlogPost() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              {post.image && (
-                <div className="aspect-video rounded-2xl overflow-hidden mb-8 border border-white/10">
-                  <img 
-                    src={post.image} 
-                    alt={post.title}
-                    className="w-full h-full object-cover"
-                    referrerPolicy="no-referrer"
-                  />
-                </div>
-              )}
+              <div className="aspect-video rounded-2xl overflow-hidden mb-8 border border-white/10">
+                <img 
+                  src={post.image} 
+                  alt={post.title}
+                  className="w-full h-full object-cover"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
 
               <div className="flex items-center gap-6 text-sm text-gray-500 mb-6 font-mono border-b border-white/10 pb-6">
                 <span className="flex items-center gap-2">

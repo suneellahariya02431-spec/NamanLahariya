@@ -2,27 +2,65 @@ import Section from './Section';
 import { ArrowRight, Calendar, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { useState, useEffect } from 'react';
 
-interface BlogPost {
-  id: number;
-  title: string;
-  excerpt: string;
-  date: string;
-  author: string;
-  content: string;
-}
+export const blogPosts = [
+  {
+    id: '1',
+    title: 'The Future of AI in Web Development',
+    excerpt: 'Exploring how artificial intelligence is reshaping the way we build and interact with websites.',
+    date: 'March 15, 2026',
+    author: 'Naman Lahariya',
+    content: `
+      Artificial Intelligence is rapidly transforming the landscape of web development. From automated code generation to intelligent user interfaces, AI is enabling developers to build faster, smarter, and more personalized web experiences.
+
+      ## The Rise of AI-Powered Tools
+      Tools like GitHub Copilot and ChatGPT are already assisting developers in writing code, debugging, and optimizing performance. These tools are not replacing developers but empowering them to focus on higher-level problem-solving.
+
+      ## Personalized User Experiences
+      AI algorithms can analyze user behavior in real-time to deliver personalized content and recommendations. This level of customization was previously difficult to achieve but is now becoming a standard expectation.
+
+      ## Conclusion
+      As AI continues to evolve, it will undoubtedly play an even more significant role in web development. Embracing these technologies is crucial for staying ahead in the industry.
+    `
+  },
+  {
+    id: '2',
+    title: 'Optimizing React Applications for Performance',
+    excerpt: 'Key strategies and best practices for building high-performance React applications.',
+    date: 'February 28, 2026',
+    author: 'Naman Lahariya',
+    content: `
+      Performance is a critical factor in the success of any web application. In the React ecosystem, there are several strategies developers can employ to ensure their apps run smoothly.
+
+      ## Code Splitting
+      Code splitting allows you to split your code into small chunks which you can then load on demand. This significantly reduces the initial load time of your application.
+
+      ## Memoization
+      Using hooks like useMemo and useCallback can prevent unnecessary re-renders, which is a common source of performance bottlenecks in React apps.
+
+      ## Virtualization
+      For applications that render long lists of data, virtualization can be a game-changer. Libraries like react-window only render the items that are currently visible on the screen.
+    `
+  },
+  {
+    id: '3',
+    title: 'Understanding Mathematical Modeling in Tech',
+    excerpt: 'How mathematical concepts are applied to solve complex problems in software engineering.',
+    date: 'January 10, 2026',
+    author: 'Naman Lahariya',
+    content: `
+      Mathematical modeling is the process of using mathematical structures to represent real-world situations. In the tech industry, this is used for everything from algorithm design to system optimization.
+
+      ## Algorithms and Complexity
+      Understanding Big O notation and algorithmic complexity is fundamental to writing efficient code. It allows developers to predict how their code will perform as data sets grow.
+
+      ## Data Science and Machine Learning
+      At the heart of data science and machine learning lies linear algebra, calculus, and probability. These mathematical foundations enable computers to learn from data and make predictions.
+    `
+  }
+];
 
 export default function BlogSection() {
-  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
-
-  useEffect(() => {
-    fetch('/api/articles')
-      .then(res => res.json())
-      .then(data => setBlogPosts(data))
-      .catch(err => console.error('Failed to fetch articles:', err));
-  }, []);
-
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
