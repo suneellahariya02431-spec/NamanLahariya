@@ -1,41 +1,32 @@
 import Section from './Section';
-import { ExternalLink, Github, ArrowRight } from 'lucide-react';
-import { useState } from 'react';
+import { ExternalLink, Github } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import useSoundEffects from '../hooks/useSoundEffects';
 
-const projects = [
-  {
-    id: 1,
-    title: "CleanUp App - SIH Team MacHack Project",
-    category: "Mobile Apps",
-    description: "AI-powered smart waste management application featuring waste classification, real-time garbage vehicle tracking, and automated digital challan generation. Implemented a Green Points ecosystem to encourage citizen participation.",
-    tech: ["AI/ML", "Geolocation", "React Native", "Node.js"],
-    links: { demo: "https://clean-up-eea39809.base44.app/", github: "https://github.com/namanartist" }
-  },
-  {
-    id: 2,
-    title: "Optimization of Tank Material Usage using Calculus",
-    category: "Web Development", // Categorized as Web Dev for demo purposes, or could be 'Other'
-    description: "Applied differential calculus to optimize tank dimensions, minimizing material usage while maintaining required volume. Developed mathematical models to achieve cost-efficient and structurally optimal designs.",
-    tech: ["Calculus", "C++", "Optimization", "Modeling"],
-    links: { demo: "https://drive.google.com/file/d/14Uy3gxO3UKVFWD2vjh7aPZDBr6UJwFtd/view", github: "https://github.com/namanartist" }
-  },
-  {
-    id: 3,
-    title: "Modern Portfolio Website",
-    category: "Web Development",
-    description: "A responsive, dark-themed portfolio website built with React, Tailwind CSS, and Framer Motion. Features smooth animations and a clean UI.",
-    tech: ["React", "Tailwind CSS", "Framer Motion"],
-    links: { demo: "#", github: "https://github.com/namanartist" }
-  }
-];
+interface Project {
+  id: number;
+  title: string;
+  category: string;
+  description: string;
+  tech: string[];
+  demoLink: string;
+  githubLink: string;
+}
 
 const categories = ['All Projects', 'Web Development', 'Graphic Design', 'Mobile Apps'];
 
 export default function Projects() {
+  const [projects, setProjects] = useState<Project[]>([]);
   const [activeCategory, setActiveCategory] = useState('All Projects');
   const { playHover, playClick, playAppear } = useSoundEffects();
+
+  useEffect(() => {
+    fetch('/api/projects')
+      .then(res => res.json())
+      .then(data => setProjects(data))
+      .catch(err => console.error('Failed to fetch projects:', err));
+  }, []);
 
   const filteredProjects = activeCategory === 'All Projects' 
     ? projects 
@@ -111,10 +102,10 @@ export default function Projects() {
                     </h3>
                   </div>
                   <div className="flex gap-2">
-                    <a href={project.links.github} className="p-2 rounded-full bg-white/5 hover:bg-white/10 hover:text-accent transition-colors" onMouseEnter={playHover} onClick={playClick}>
+                    <a href={project.githubLink} className="p-2 rounded-full bg-white/5 hover:bg-white/10 hover:text-accent transition-colors" onMouseEnter={playHover} onClick={playClick}>
                       <Github size={18} />
                     </a>
-                    <a href={project.links.demo} className="p-2 rounded-full bg-white/5 hover:bg-white/10 hover:text-accent transition-colors" onMouseEnter={playHover} onClick={playClick}>
+                    <a href={project.demoLink} className="p-2 rounded-full bg-white/5 hover:bg-white/10 hover:text-accent transition-colors" onMouseEnter={playHover} onClick={playClick}>
                       <ExternalLink size={18} />
                     </a>
                   </div>

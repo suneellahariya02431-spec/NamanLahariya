@@ -1,9 +1,24 @@
 import Section from './Section';
-import { Code2, Database, Layout, Terminal, Cpu, Brain } from 'lucide-react';
-import { ReactNode } from 'react';
+import * as Icons from 'lucide-react';
+import { ReactNode, useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 
+interface SkillGroup {
+  title: string;
+  icon: string;
+  skills: string[];
+}
+
 export default function About() {
+  const [skillGroups, setSkillGroups] = useState<SkillGroup[]>([]);
+
+  useEffect(() => {
+    fetch('/api/skills')
+      .then(res => res.json())
+      .then(data => setSkillGroups(data))
+      .catch(err => console.error('Failed to fetch skills:', err));
+  }, []);
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -31,9 +46,28 @@ export default function About() {
         <h2 className="text-3xl md:text-5xl font-serif font-bold mb-4">
           Where Code Meets <span className="text-accent italic">Intelligence</span>
         </h2>
-        <p className="text-gray-400 max-w-2xl mx-auto">
+        <p className="text-gray-400 max-w-2xl mx-auto mb-8">
           I build efficient, scalable digital solutions that matter. With a strong foundation in Mathematics and Computing, I approach problems with analytical precision and creative flair.
         </p>
+        
+        <div className="flex justify-center mb-8">
+          <div 
+            className="badge-base LI-profile-badge" 
+            data-locale="en_US" 
+            data-size="medium" 
+            data-theme="dark" 
+            data-type="HORIZONTAL" 
+            data-vanity="naman-lahariya" 
+            data-version="v1"
+          >
+            <a 
+              className="badge-base__link LI-simple-link" 
+              href="https://in.linkedin.com/in/naman-lahariya?trk=profile-badge"
+            >
+              Naman Lahariya
+            </a>
+          </div>
+        </div>
       </motion.div>
 
       <motion.div 
@@ -43,42 +77,25 @@ export default function About() {
         viewport={{ once: true, margin: "-50px" }}
         variants={containerVariants}
       >
-        <SkillCard 
-          variants={itemVariants}
-          title="Languages" 
-          icon={<Code2 className="text-accent" size={24} />}
-          skills={['C++', 'JavaScript', 'Java', 'Python']}
-        />
-        <SkillCard 
-          variants={itemVariants}
-          title="Frontend" 
-          icon={<Layout className="text-blue-400" size={24} />}
-          skills={['HTML5', 'CSS3', 'React', 'Tailwind CSS']}
-        />
-        <SkillCard 
-          variants={itemVariants}
-          title="Backend" 
-          icon={<Database className="text-green-400" size={24} />}
-          skills={['Node.js', 'Express', 'SQL', 'MongoDB']}
-        />
-        <SkillCard 
-          variants={itemVariants}
-          title="Tools" 
-          icon={<Terminal className="text-purple-400" size={24} />}
-          skills={['Git', 'GitHub', 'VS Code', 'Postman']}
-        />
-        <SkillCard 
-          variants={itemVariants}
-          title="Core Concepts" 
-          icon={<Cpu className="text-red-400" size={24} />}
-          skills={['Data Structures', 'Algorithms', 'OOPs', 'DBMS']}
-        />
-        <SkillCard 
-          variants={itemVariants}
-          title="Specialization" 
-          icon={<Brain className="text-yellow-600" size={24} />}
-          skills={['Mathematics', 'Computing', 'Optimization', 'Problem Solving']}
-        />
+        {skillGroups.map((group) => {
+          const IconComponent = (Icons as any)[group.icon] || Icons.Code2;
+          return (
+            <SkillCard 
+              key={group.title}
+              variants={itemVariants}
+              title={group.title} 
+              icon={<IconComponent className={
+                group.title === 'Frontend' ? 'text-blue-400' :
+                group.title === 'Backend' ? 'text-green-400' :
+                group.title === 'Tools' ? 'text-purple-400' :
+                group.title === 'Core Concepts' ? 'text-red-400' :
+                group.title === 'Specialization' ? 'text-yellow-600' :
+                'text-accent'
+              } size={24} />}
+              skills={group.skills}
+            />
+          );
+        })}
       </motion.div>
     </Section>
   );

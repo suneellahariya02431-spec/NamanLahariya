@@ -1,8 +1,30 @@
 import Section from './Section';
 import { Briefcase, GraduationCap } from 'lucide-react';
 import { motion } from 'motion/react';
+import { useState, useEffect } from 'react';
+
+interface JourneyItemData {
+  id: number;
+  year: string;
+  title: string;
+  subtitle: string;
+  description: string;
+}
 
 export default function Journey() {
+  const [education, setEducation] = useState<JourneyItemData[]>([]);
+  const [experience, setExperience] = useState<JourneyItemData[]>([]);
+
+  useEffect(() => {
+    fetch('/api/journey')
+      .then(res => res.json())
+      .then(data => {
+        setEducation(data.education);
+        setExperience(data.experience);
+      })
+      .catch(err => console.error('Failed to fetch journey:', err));
+  }, []);
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -37,27 +59,16 @@ export default function Journey() {
             <h3 className="text-2xl font-bold">Education Journey</h3>
           </div>
           <div className="space-y-8 border-l border-white/10 ml-3 pl-8 relative">
-            <JourneyItem 
-              variants={itemVariants}
-              year="2025 - 2029"
-              title="B.Tech, Mathematics and Computing"
-              subtitle="Madhav Institute of Technology and Science"
-              description="Pursuing undergraduate degree with a focus on computational mathematics."
-            />
-            <JourneyItem 
-              variants={itemVariants}
-              year="2023 - 2025"
-              title="Higher Secondary (12th)"
-              subtitle="Bright Convent Hr. Sec. School"
-              description="Completed with focus on Science and Mathematics."
-            />
-            <JourneyItem 
-              variants={itemVariants}
-              year="2021 - 2023"
-              title="Secondary School (10th)"
-              subtitle="The Radiant Hr. Sec. School"
-              description="Completed with academic excellence."
-            />
+            {education.map((item) => (
+              <JourneyItem 
+                key={item.id}
+                variants={itemVariants}
+                year={item.year}
+                title={item.title}
+                subtitle={item.subtitle}
+                description={item.description}
+              />
+            ))}
           </div>
         </motion.div>
 
@@ -73,20 +84,16 @@ export default function Journey() {
             <h3 className="text-2xl font-bold">Work Journey</h3>
           </div>
           <div className="space-y-8 border-l border-white/10 ml-3 pl-8 relative">
-            <JourneyItem 
-              variants={itemVariants}
-              year="2026 - Present"
-              title="Campus Ambassador"
-              subtitle="INTERSHALA"
-              description="Leading campus initiatives and promoting student opportunities."
-            />
-            <JourneyItem 
-              variants={itemVariants}
-              year="2025"
-              title="Digital Marketing Intern"
-              subtitle="Corizo Edutech Pvt. Ltd."
-              description="Managed digital campaigns and analyzed engagement metrics."
-            />
+            {experience.map((item) => (
+              <JourneyItem 
+                key={item.id}
+                variants={itemVariants}
+                year={item.year}
+                title={item.title}
+                subtitle={item.subtitle}
+                description={item.description}
+              />
+            ))}
           </div>
         </motion.div>
       </div>
