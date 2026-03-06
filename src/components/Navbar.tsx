@@ -3,6 +3,7 @@ import { motion, useScroll, useMotionValueEvent } from 'motion/react';
 import { Menu, X, Download } from 'lucide-react';
 import useSoundEffects from '../hooks/useSoundEffects';
 import { usePWA } from '../hooks/usePWA';
+import { useSiteData } from '../context/SiteContext';
 
 const navItems = [
   { name: 'Home', href: '#home' },
@@ -18,6 +19,7 @@ export default function Navbar() {
   const { scrollY } = useScroll();
   const { playHover, playClick, playAppear, playSwoosh } = useSoundEffects();
   const { isInstallable, promptInstall } = usePWA();
+  const { siteData } = useSiteData();
 
   const toggleMobileMenu = () => {
     const newState = !mobileMenuOpen;
@@ -40,6 +42,14 @@ export default function Navbar() {
     setScrolled(latest > 50);
   });
 
+  // Extract initials from name
+  const initials = siteData.name
+    .split(' ')
+    .map(n => n[0])
+    .join('')
+    .substring(0, 2)
+    .toUpperCase();
+
   return (
     <motion.nav
       variants={{
@@ -59,7 +69,7 @@ export default function Navbar() {
         }`}
       >
         <a href="#" className="text-xl font-serif font-bold text-white tracking-wider" onClick={playClick} onMouseEnter={playHover}>
-          NL<span className="text-accent">.</span>
+          {initials}<span className="text-accent">.</span>
         </a>
 
         {/* Desktop Menu */}

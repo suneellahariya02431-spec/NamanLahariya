@@ -1,9 +1,12 @@
 import Section from './Section';
-import { Send, Mail, Phone, MapPin, CheckCircle, AlertCircle, Github, Linkedin } from 'lucide-react';
+import { Send, Mail, Phone, MapPin, CheckCircle, AlertCircle, Github, Linkedin, Lock, Unlock } from 'lucide-react';
 import { useState, FormEvent, ChangeEvent, ReactNode } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { useSiteData } from '../context/SiteContext';
+import EditableField from './EditableField';
 
 export default function Contact() {
+  const { siteData, isLoggedIn, login, logout } = useSiteData();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -34,23 +37,35 @@ export default function Contact() {
 
     setIsSubmitting(true);
     
+    const emailAddress = siteData.email.replace('mailto:', '');
+
     try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+      const response = await fetch(`https://formsubmit.co/ajax/${emailAddress}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+          _subject: formData.subject || `New message from ${formData.name}`,
+        }),
       });
 
       if (response.ok) {
         setIsSuccess(true);
         setFormData({ name: '', email: '', subject: '', message: '' });
+        // Reset success message after 5 seconds
         setTimeout(() => setIsSuccess(false), 5000);
       } else {
-        alert('Failed to send message. Please try again.');
+        throw new Error("Form submission failed");
       }
     } catch (error) {
-      console.error('Failed to submit form:', error);
-      alert('An error occurred. Please try again.');
+      console.error(error);
+      alert("There was an error sending your message. Please try again later.");
     } finally {
       setIsSubmitting(false);
     }
@@ -88,13 +103,13 @@ export default function Contact() {
               <ContactItem 
                 icon={<Mail size={20} />}
                 label="Email"
-                value="namanalahariya@gmail.com"
-                href="mailto:namanalahariya@gmail.com"
+                value={<EditableField field="email">{siteData.email.replace('mailto:', '')}</EditableField>}
+                href={siteData.email}
               />
               <ContactItem 
                 icon={<MapPin size={20} />}
                 label="Location"
-                value="Gwalior, India"
+                value={<EditableField field="location">{siteData.location}</EditableField>}
               />
             </div>
           </div>
@@ -199,20 +214,38 @@ export default function Contact() {
       
       <footer className="mt-20 text-center text-gray-600 text-sm flex flex-col items-center gap-6">
         <div className="flex items-center gap-4">
-          <a href="https://github.com/namanartist" target="_blank" rel="noopener noreferrer" className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 border border-white/10 hover:border-accent hover:text-accent transition-all duration-300">
+          <a href={siteData.github} target="_blank" rel="noopener noreferrer" className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 border border-white/10 hover:border-accent hover:text-accent transition-all duration-300">
             <Github size={20} />
           </a>
-          <a href="https://www.linkedin.com/in/naman-lahariya" target="_blank" rel="noopener noreferrer" className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 border border-white/10 hover:border-accent hover:text-accent transition-all duration-300">
+          <a href={siteData.linkedin} target="_blank" rel="noopener noreferrer" className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 border border-white/10 hover:border-accent hover:text-accent transition-all duration-300">
             <Linkedin size={20} />
           </a>
         </div>
-        <p>© {new Date().getFullYear()} Naman Lahariya. All rights reserved.</p>
+        <div className="flex items-center gap-2">
+          <p>© {new Date().getFullYear()} {siteData.name}. All rights reserved.</p>
+          <button 
+            onClick={() => {
+              if (isLoggedIn) {
+                logout();
+              } else {
+                const pwd = prompt('Enter admin password (hint: admin):');
+                if (pwd) {
+                  if (!login(pwd)) alert('Incorrect password');
+                }
+              }
+            }}
+            className="text-gray-600 hover:text-accent transition-colors ml-2"
+            title={isLoggedIn ? "Logout" : "Admin Login"}
+          >
+            {isLoggedIn ? <Unlock size={14} /> : <Lock size={14} />}
+          </button>
+        </div>
       </footer>
     </Section>
   );
 }
 
-function ContactItem({ icon, label, value, href }: { icon: ReactNode; label: string; value: string; href?: string }) {
+function ContactItem({ icon, label, value, href }: { icon: ReactNode; label: string; value: ReactNode; href?: string }) {
   const content = (
     <div className="flex items-center gap-4 group cursor-pointer">
       <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-gray-400 group-hover:text-accent group-hover:bg-white/10 transition-all">
@@ -220,7 +253,7 @@ function ContactItem({ icon, label, value, href }: { icon: ReactNode; label: str
       </div>
       <div>
         <p className="text-xs font-mono text-gray-500 uppercase mb-0.5">{label}</p>
-        <p className="text-white font-medium group-hover:text-accent transition-colors">{value}</p>
+        <div className="text-white font-medium group-hover:text-accent transition-colors">{value}</div>
       </div>
     </div>
   );

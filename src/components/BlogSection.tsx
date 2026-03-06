@@ -2,6 +2,7 @@ import Section from './Section';
 import { ArrowRight, Calendar, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
+import { useSiteData } from '../context/SiteContext';
 
 export const blogPosts = [
   {
@@ -64,6 +65,8 @@ export const blogPosts = [
 ];
 
 export default function BlogSection() {
+  const { siteData } = useSiteData();
+  
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -116,7 +119,7 @@ export default function BlogSection() {
                 </span>
                 <span className="flex items-center gap-1">
                   <User size={12} />
-                  {post.author}
+                  {siteData.name}
                 </span>
               </div>
               
