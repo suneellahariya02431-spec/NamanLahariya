@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, useScroll, useMotionValueEvent } from 'motion/react';
 import { Menu, X, Download } from 'lucide-react';
 import useSoundEffects from '../hooks/useSoundEffects';
-import { usePWA } from '../hooks/usePWA';
-import { useSiteData } from '../context/SiteContext';
+import { usePWAInstall } from '../hooks/usePWAInstall';
 
 const navItems = [
   { name: 'Home', href: '#home' },
@@ -18,8 +17,7 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { scrollY } = useScroll();
   const { playHover, playClick, playAppear, playSwoosh } = useSoundEffects();
-  const { isInstallable, promptInstall } = usePWA();
-  const { siteData } = useSiteData();
+  const { isInstallable, installPWA } = usePWAInstall();
 
   const toggleMobileMenu = () => {
     const newState = !mobileMenuOpen;
@@ -42,14 +40,6 @@ export default function Navbar() {
     setScrolled(latest > 50);
   });
 
-  // Extract initials from name
-  const initials = siteData.name
-    .split(' ')
-    .map(n => n[0])
-    .join('')
-    .substring(0, 2)
-    .toUpperCase();
-
   return (
     <motion.nav
       variants={{
@@ -69,7 +59,7 @@ export default function Navbar() {
         }`}
       >
         <a href="#" className="text-xl font-serif font-bold text-white tracking-wider" onClick={playClick} onMouseEnter={playHover}>
-          {initials}<span className="text-accent">.</span>
+          NL<span className="text-accent">.</span>
         </a>
 
         {/* Desktop Menu */}
@@ -89,10 +79,10 @@ export default function Navbar() {
             <button
               onClick={() => {
                 playClick();
-                promptInstall();
+                installPWA();
               }}
               onMouseEnter={playHover}
-              className="flex items-center gap-2 text-sm font-medium bg-accent/10 text-accent hover:bg-accent hover:text-white px-4 py-2 rounded-full transition-all"
+              className="flex items-center gap-2 text-sm font-medium bg-accent/10 text-accent px-4 py-2 rounded-full hover:bg-accent hover:text-black transition-all"
             >
               <Download size={16} />
               Install App
@@ -137,10 +127,9 @@ export default function Navbar() {
               onClick={() => {
                 setMobileMenuOpen(false);
                 playClick();
-                promptInstall();
+                installPWA();
               }}
-              onMouseEnter={playHover}
-              className="flex items-center justify-center gap-2 text-lg font-medium bg-accent/10 text-accent hover:bg-accent hover:text-white py-3 rounded-xl transition-all mt-2"
+              className="flex items-center justify-center gap-2 text-lg font-medium bg-accent/10 text-accent px-4 py-3 rounded-xl hover:bg-accent hover:text-black transition-all mt-2"
             >
               <Download size={20} />
               Install App
