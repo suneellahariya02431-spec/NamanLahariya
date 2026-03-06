@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { motion, useScroll, useMotionValueEvent } from 'motion/react';
-import { Menu, X, Download } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import useSoundEffects from '../hooks/useSoundEffects';
-import { usePWAInstall } from '../hooks/usePWAInstall';
+import PWAInstallButton from './PWAInstallButton';
 
 const navItems = [
   { name: 'Home', href: '#home' },
@@ -17,7 +17,6 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { scrollY } = useScroll();
   const { playHover, playClick, playAppear, playSwoosh } = useSoundEffects();
-  const { isInstallable, installPWA } = usePWAInstall();
 
   const toggleMobileMenu = () => {
     const newState = !mobileMenuOpen;
@@ -75,19 +74,7 @@ export default function Navbar() {
               {item.name}
             </a>
           ))}
-          {isInstallable && (
-            <button
-              onClick={() => {
-                playClick();
-                installPWA();
-              }}
-              onMouseEnter={playHover}
-              className="flex items-center gap-2 text-sm font-medium bg-accent/10 text-accent px-4 py-2 rounded-full hover:bg-accent hover:text-black transition-all"
-            >
-              <Download size={16} />
-              Install App
-            </button>
-          )}
+          <PWAInstallButton />
         </div>
 
         {/* Mobile Menu Toggle */}
@@ -122,19 +109,9 @@ export default function Navbar() {
               {item.name}
             </a>
           ))}
-          {isInstallable && (
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                playClick();
-                installPWA();
-              }}
-              className="flex items-center justify-center gap-2 text-lg font-medium bg-accent/10 text-accent px-4 py-3 rounded-xl hover:bg-accent hover:text-black transition-all mt-2"
-            >
-              <Download size={20} />
-              Install App
-            </button>
-          )}
+          <div className="flex justify-center pt-2">
+            <PWAInstallButton />
+          </div>
         </motion.div>
       )}
     </motion.nav>

@@ -34,17 +34,29 @@ export default function Contact() {
 
     setIsSubmitting(true);
     
-    const subject = formData.subject || 'New Contact Form Submission';
-    const body = `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`;
-    
-    window.location.href = `mailto:namanlahariya22@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    
-    setIsSubmitting(false);
-    setIsSuccess(true);
-    setFormData({ name: '', email: '', subject: '', message: '' });
-    
-    // Reset success message after 5 seconds
-    setTimeout(() => setIsSuccess(false), 5000);
+    try {
+      const response = await fetch('https://formspree.io/f/namanlahariya22@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (response.ok) {
+        setIsSuccess(true);
+        setFormData({ name: '', email: '', subject: '', message: '' });
+        // Reset success message after 5 seconds
+        setTimeout(() => setIsSuccess(false), 5000);
+      } else {
+        alert('Something went wrong. Please try again later.');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('Something went wrong. Please try again later.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -79,8 +91,8 @@ export default function Contact() {
               <ContactItem 
                 icon={<Mail size={20} />}
                 label="Email"
-                value="namanlahariya22@gmail.com"
-                href="mailto:namanlahariya22@gmail.com"
+                value="namanalahariya@gmail.com"
+                href="mailto:namanalahariya@gmail.com"
               />
               <ContactItem 
                 icon={<MapPin size={20} />}

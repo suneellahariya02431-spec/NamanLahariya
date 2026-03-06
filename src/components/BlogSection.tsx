@@ -2,7 +2,6 @@ import Section from './Section';
 import { ArrowRight, Calendar, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { useSiteData } from '../context/SiteContext';
 
 export const blogPosts = [
   {
@@ -11,9 +10,9 @@ export const blogPosts = [
     excerpt: 'Exploring how artificial intelligence is reshaping the way we build and interact with websites.',
     date: 'March 15, 2026',
     author: 'Naman Lahariya',
-    image: 'https://picsum.photos/seed/ai/800/400',
+    image: 'https://picsum.photos/seed/ai-web/800/600',
     content: `
-      Artificial Intelligence is rapidly transforming the landscape of web development. From automated code generation to intelligent user interfaces, AI is enabling developers to build faster, smarter, and more personalized web experiences.
+ From automated code generation to intelligent user interfaces, AI is enabling developers to build faster, smarter, and more personalized web experiences.
 
       ## The Rise of AI-Powered Tools
       Tools like GitHub Copilot and ChatGPT are already assisting developers in writing code, debugging, and optimizing performance. These tools are not replacing developers but empowering them to focus on higher-level problem-solving.
@@ -31,9 +30,9 @@ export const blogPosts = [
     excerpt: 'Key strategies and best practices for building high-performance React applications.',
     date: 'February 28, 2026',
     author: 'Naman Lahariya',
-    image: 'https://picsum.photos/seed/react/800/400',
+    image: 'https://picsum.photos/seed/react-perf/800/600',
     content: `
-      Performance is a critical factor in the success of any web application. In the React ecosystem, there are several strategies developers can employ to ensure their apps run smoothly.
+ In the React ecosystem, there are several strategies developers can employ to ensure their apps run smoothly.
 
       ## Code Splitting
       Code splitting allows you to split your code into small chunks which you can then load on demand. This significantly reduces the initial load time of your application.
@@ -51,9 +50,9 @@ export const blogPosts = [
     excerpt: 'How mathematical concepts are applied to solve complex problems in software engineering.',
     date: 'January 10, 2026',
     author: 'Naman Lahariya',
-    image: 'https://picsum.photos/seed/math/800/400',
+    image: 'https://picsum.photos/seed/math-tech/800/600',
     content: `
-      Mathematical modeling is the process of using mathematical structures to represent real-world situations. In the tech industry, this is used for everything from algorithm design to system optimization.
+ In the tech industry, this is used for everything from algorithm design to system optimization.
 
       ## Algorithms and Complexity
       Understanding Big O notation and algorithmic complexity is fundamental to writing efficient code. It allows developers to predict how their code will perform as data sets grow.
@@ -65,8 +64,6 @@ export const blogPosts = [
 ];
 
 export default function BlogSection() {
-  const { siteData } = useSiteData();
-  
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -119,7 +116,7 @@ export default function BlogSection() {
                 </span>
                 <span className="flex items-center gap-1">
                   <User size={12} />
-                  {siteData.name}
+                  {post.author}
                 </span>
               </div>
               
