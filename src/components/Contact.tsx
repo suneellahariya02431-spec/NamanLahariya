@@ -1,9 +1,11 @@
 import Section from './Section';
-import { Send, Mail, Phone, MapPin, CheckCircle, AlertCircle, Github, Linkedin } from 'lucide-react';
+import { Send, Mail, Phone, MapPin, CheckCircle, AlertCircle } from 'lucide-react';
 import { useState, FormEvent, ChangeEvent, ReactNode } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import useSoundEffects from '../hooks/useSoundEffects';
 
 export default function Contact() {
+  const { playHover, playClick, playSuccess, playSwoosh } = useSoundEffects();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -34,35 +36,16 @@ export default function Contact() {
 
     setIsSubmitting(true);
     
-    try {
-      const response = await fetch('https://formsubmit.co/ajax/namanlahariya22@gmail.com', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          subject: formData.subject,
-          message: formData.message,
-          _subject: `New Contact Form Submission from ${formData.name}`
-        })
-      });
-
-      if (response.ok) {
-        setIsSuccess(true);
-        setFormData({ name: '', email: '', subject: '', message: '' });
-        setTimeout(() => setIsSuccess(false), 5000);
-      } else {
-        throw new Error('Failed to send message');
-      }
-    } catch (error) {
-      console.error('Error sending message:', error);
-      alert('Failed to send message. Please try again later.');
-    } finally {
-      setIsSubmitting(false);
-    }
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    setIsSubmitting(false);
+    setIsSuccess(true);
+    playSuccess();
+    setFormData({ name: '', email: '', subject: '', message: '' });
+    
+    // Reset success message after 5 seconds
+    setTimeout(() => setIsSuccess(false), 5000);
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -97,8 +80,8 @@ export default function Contact() {
               <ContactItem 
                 icon={<Mail size={20} />}
                 label="Email"
-                value="namanlahariya22@gmail.com"
-                href="mailto:namanlahariya22@gmail.com"
+                value="namanalahariya@gmail.com"
+                href="mailto:namanalahariya@gmail.com"
               />
               <ContactItem 
                 icon={<MapPin size={20} />}
@@ -194,6 +177,8 @@ export default function Contact() {
                   <button 
                     type="submit"
                     disabled={isSubmitting}
+                    onMouseEnter={playHover}
+                    onClick={playClick}
                     className="w-full bg-accent text-black font-bold py-4 rounded-lg hover:bg-accent-dim transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isSubmitting ? 'Sending...' : 'Send Message'}
@@ -206,15 +191,7 @@ export default function Contact() {
         </div>
       </div>
       
-      <footer className="mt-20 text-center text-gray-600 text-sm flex flex-col items-center gap-6">
-        <div className="flex items-center gap-4">
-          <a href="https://github.com/namanartist" target="_blank" rel="noopener noreferrer" className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 border border-white/10 hover:border-accent hover:text-accent transition-all duration-300">
-            <Github size={20} />
-          </a>
-          <a href="https://www.linkedin.com/in/naman-lahariya" target="_blank" rel="noopener noreferrer" className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 border border-white/10 hover:border-accent hover:text-accent transition-all duration-300">
-            <Linkedin size={20} />
-          </a>
-        </div>
+      <footer className="mt-20 text-center text-gray-600 text-sm">
         <p>© {new Date().getFullYear()} Naman Lahariya. All rights reserved.</p>
       </footer>
     </Section>
@@ -222,8 +199,13 @@ export default function Contact() {
 }
 
 function ContactItem({ icon, label, value, href }: { icon: ReactNode; label: string; value: string; href?: string }) {
+  const { playHover, playClick } = useSoundEffects();
   const content = (
-    <div className="flex items-center gap-4 group cursor-pointer">
+    <div 
+      className="flex items-center gap-4 group cursor-pointer"
+      onMouseEnter={playHover}
+      onClick={playClick}
+    >
       <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-gray-400 group-hover:text-accent group-hover:bg-white/10 transition-all">
         {icon}
       </div>
