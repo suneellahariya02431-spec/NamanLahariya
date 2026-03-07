@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, useScroll, useMotionValueEvent } from 'motion/react';
-import { Menu, X, Download } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import useSoundEffects from '../hooks/useSoundEffects';
-import { usePWA } from '../hooks/usePWA';
 
 const navItems = [
   { name: 'Home', href: '#home' },
@@ -17,7 +16,6 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { scrollY } = useScroll();
   const { playHover, playClick, playAppear, playSwoosh } = useSoundEffects();
-  const { isInstallable, installApp } = usePWA();
 
   const toggleMobileMenu = () => {
     const newState = !mobileMenuOpen;
@@ -46,7 +44,6 @@ export default function Navbar() {
         visible: { y: 0 },
         hidden: { y: "-100%" },
       }}
-      initial="hidden"
       animate={hidden ? "hidden" : "visible"}
       transition={{ duration: 0.35, ease: "easeInOut" }}
       className={`fixed top-0 left-0 right-0 z-40 flex justify-center pt-6 px-4 pointer-events-none`}
@@ -75,41 +72,15 @@ export default function Navbar() {
               {item.name}
             </a>
           ))}
-          {isInstallable && (
-            <button
-              onClick={() => {
-                playClick();
-                installApp();
-              }}
-              onMouseEnter={playHover}
-              className="flex items-center gap-2 text-sm font-medium bg-accent/10 text-accent hover:bg-accent hover:text-black px-4 py-2 rounded-full transition-all"
-            >
-              <Download size={16} />
-              <span>Install App</span>
-            </button>
-          )}
         </div>
 
         {/* Mobile Menu Toggle */}
-        <div className="md:hidden flex items-center gap-4">
-          {isInstallable && (
-            <button
-              onClick={() => {
-                playClick();
-                installApp();
-              }}
-              className="text-accent bg-accent/10 p-2 rounded-full"
-            >
-              <Download size={20} />
-            </button>
-          )}
-          <button 
-            className="text-white"
-            onClick={toggleMobileMenu}
-          >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
+        <button 
+          className="md:hidden text-white"
+          onClick={toggleMobileMenu}
+        >
+          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
       </div>
 
       {/* Mobile Menu Overlay */}
