@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
+import { Analytics } from '@vercel/analytics/react';
 import Loader from './components/Loader';
 import Home from './pages/Home';
 import BlogPost from './pages/BlogPost';
@@ -27,6 +28,7 @@ export default function App() {
               </Routes>
             )}
           </AnimatePresence>
+          <Analytics />
         </Router>
       </SiteProvider>
     </HelmetProvider>
