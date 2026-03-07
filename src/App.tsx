@@ -20,11 +20,13 @@ export default function App() {
               <Loader onComplete={() => setLoading(false)} />
             </motion.div>
           ) : (
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/blog" element={<Home />} /> {/* For now, blog list is on home */}
-              <Route path="/blog/:id" element={<BlogPost />} />
-            </Routes>
+            <motion.div key="content" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/blog" element={<Home />} /> {/* For now, blog list is on home */}
+                <Route path="/blog/:id" element={<BlogPost />} />
+              </Routes>
+            </motion.div>
           )}
         </AnimatePresence>
       </Router>
