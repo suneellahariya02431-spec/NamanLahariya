@@ -1,7 +1,6 @@
 import Section from './Section';
 import { ArrowRight, Calendar, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import useSoundEffects from '../hooks/useSoundEffects';
 
 export const blogPosts = [
   {
@@ -64,8 +63,6 @@ export const blogPosts = [
 ];
 
 export default function BlogSection() {
-  const { playHover, playClick } = useSoundEffects();
-
   return (
     <Section id="blog">
       <div className="flex flex-col md:flex-row items-end justify-between mb-12 gap-6">
@@ -77,12 +74,7 @@ export default function BlogSection() {
             Thoughts, tutorials, and insights on technology, mathematics, and design.
           </p>
         </div>
-        <Link 
-          to="/blog" 
-          className="flex items-center gap-2 text-sm font-medium hover:text-accent transition-colors"
-          onMouseEnter={playHover}
-          onClick={playClick}
-        >
+        <Link to="/blog" className="flex items-center gap-2 text-sm font-medium hover:text-accent transition-colors">
           View all posts <ArrowRight size={16} />
         </Link>
       </div>
@@ -92,7 +84,6 @@ export default function BlogSection() {
           <article 
             key={post.id}
             className="group flex flex-col bg-[#121212] border border-white/5 rounded-2xl overflow-hidden hover:border-accent/30 transition-all duration-300"
-            onMouseEnter={playHover}
           >
             <div className="p-6 flex flex-col flex-grow">
               <div className="flex items-center gap-4 text-xs text-gray-500 mb-3 font-mono">
@@ -117,8 +108,6 @@ export default function BlogSection() {
               <Link 
                 to={`/blog/${post.id}`}
                 className="inline-flex items-center gap-2 text-sm font-medium text-accent hover:text-white transition-colors mt-auto"
-                onMouseEnter={playHover}
-                onClick={playClick}
               >
                 Read Article <ArrowRight size={16} />
               </Link>

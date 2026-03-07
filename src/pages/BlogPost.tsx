@@ -6,12 +6,10 @@ import ReactMarkdown from 'react-markdown';
 import { blogPosts } from '../components/BlogSection';
 import Navbar from '../components/Navbar';
 import Contact from '../components/Contact';
-import useSoundEffects from '../hooks/useSoundEffects';
 
 export default function BlogPost() {
   const { id } = useParams();
   const post = blogPosts.find(p => p.id === id);
-  const { playHover, playClick, playAppear } = useSoundEffects();
 
   if (!post) {
     return (
@@ -31,7 +29,6 @@ export default function BlogPost() {
         <meta name="description" content={post.excerpt} />
         <meta property="og:title" content={post.title} />
         <meta property="og:description" content={post.excerpt} />
-        <meta property="og:image" content={post.image} />
         <meta property="og:type" content="article" />
       </Helmet>
 
@@ -43,8 +40,6 @@ export default function BlogPost() {
             <Link 
               to="/" 
               className="inline-flex items-center gap-2 text-gray-400 hover:text-accent mb-8 transition-colors"
-              onMouseEnter={playHover}
-              onClick={playClick}
             >
               <ArrowLeft size={16} /> Back to Home
             </Link>
@@ -53,17 +48,7 @@ export default function BlogPost() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              onAnimationStart={() => playAppear()}
             >
-              <div className="aspect-video rounded-2xl overflow-hidden mb-8 border border-white/10">
-                <img 
-                  src={post.image} 
-                  alt={post.title}
-                  className="w-full h-full object-cover"
-                  referrerPolicy="no-referrer"
-                />
-              </div>
-
               <div className="flex items-center gap-6 text-sm text-gray-500 mb-6 font-mono border-b border-white/10 pb-6">
                 <span className="flex items-center gap-2">
                   <Calendar size={16} className="text-accent" />

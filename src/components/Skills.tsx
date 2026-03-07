@@ -2,7 +2,6 @@ import Section from './Section';
 import { Code2, Database, Layout, Terminal, Cpu, Brain, Users, MessageSquare, Lightbulb, Clock } from 'lucide-react';
 import { ReactNode } from 'react';
 import { motion } from 'motion/react';
-import useSoundEffects from '../hooks/useSoundEffects';
 
 export default function Skills() {
   return (
@@ -69,15 +68,12 @@ export default function Skills() {
 }
 
 function SkillCard({ title, icon, skills, delay }: { title: string; icon: ReactNode; skills: string[], delay: number }) {
-  const { playAppear, playHover } = useSoundEffects();
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay, duration: 0.5 }}
-      onAnimationStart={() => playAppear()}
-      onMouseEnter={playHover}
       className="p-6 rounded-2xl bg-[#121212] border border-white/5 hover:border-accent/30 transition-all duration-300 group hover:-translate-y-1"
     >
       <div className="flex items-center gap-3 mb-4">
@@ -98,11 +94,9 @@ function SkillCard({ title, icon, skills, delay }: { title: string; icon: ReactN
 }
 
 function SoftSkillCard({ icon, title }: { icon: ReactNode; title: string }) {
-  const { playHover } = useSoundEffects();
   return (
     <motion.div 
       whileHover={{ scale: 1.05 }}
-      onMouseEnter={playHover}
       className="flex flex-col items-center justify-center p-6 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors text-center gap-3"
     >
       <div className="text-accent">{icon}</div>
