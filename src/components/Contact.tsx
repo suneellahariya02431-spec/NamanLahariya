@@ -35,25 +35,31 @@ export default function Contact() {
     setIsSubmitting(true);
     
     try {
-      const response = await fetch('https://formspree.io/f/namanlahariya22@gmail.com', {
+      const response = await fetch('https://formsubmit.co/ajax/namanlahariya22@gmail.com', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+          _subject: `New Contact Form Submission from ${formData.name}`
+        })
       });
 
       if (response.ok) {
         setIsSuccess(true);
         setFormData({ name: '', email: '', subject: '', message: '' });
-        // Reset success message after 5 seconds
         setTimeout(() => setIsSuccess(false), 5000);
       } else {
-        alert('Something went wrong. Please try again later.');
+        throw new Error('Failed to send message');
       }
     } catch (error) {
-      console.error('Error submitting form:', error);
-      alert('Something went wrong. Please try again later.');
+      console.error('Error sending message:', error);
+      alert('Failed to send message. Please try again later.');
     } finally {
       setIsSubmitting(false);
     }
@@ -91,8 +97,8 @@ export default function Contact() {
               <ContactItem 
                 icon={<Mail size={20} />}
                 label="Email"
-                value="namanalahariya@gmail.com"
-                href="mailto:namanalahariya@gmail.com"
+                value="namanlahariya22@gmail.com"
+                href="mailto:namanlahariya22@gmail.com"
               />
               <ContactItem 
                 icon={<MapPin size={20} />}

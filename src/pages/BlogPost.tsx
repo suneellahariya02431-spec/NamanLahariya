@@ -6,12 +6,10 @@ import ReactMarkdown from 'react-markdown';
 import { blogPosts } from '../components/BlogSection';
 import Navbar from '../components/Navbar';
 import Contact from '../components/Contact';
-import { useSiteData } from '../context/SiteContext';
 
 export default function BlogPost() {
   const { id } = useParams();
   const post = blogPosts.find(p => p.id === id);
-  const { siteData } = useSiteData();
 
   if (!post) {
     return (
@@ -27,11 +25,10 @@ export default function BlogPost() {
   return (
     <>
       <Helmet>
-        <title>{post.title} | {siteData.name}</title>
+        <title>{post.title} | Naman Lahariya</title>
         <meta name="description" content={post.excerpt} />
         <meta property="og:title" content={post.title} />
         <meta property="og:description" content={post.excerpt} />
-        <meta property="og:image" content={post.image} />
         <meta property="og:type" content="article" />
       </Helmet>
 
@@ -52,15 +49,6 @@ export default function BlogPost() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <div className="aspect-video rounded-2xl overflow-hidden mb-8 border border-white/10">
-                <img 
-                  src={post.image} 
-                  alt={post.title}
-                  className="w-full h-full object-cover"
-                  referrerPolicy="no-referrer"
-                />
-              </div>
-
               <div className="flex items-center gap-6 text-sm text-gray-500 mb-6 font-mono border-b border-white/10 pb-6">
                 <span className="flex items-center gap-2">
                   <Calendar size={16} className="text-accent" />
@@ -68,7 +56,7 @@ export default function BlogPost() {
                 </span>
                 <span className="flex items-center gap-2">
                   <User size={16} className="text-accent" />
-                  {siteData.name}
+                  {post.author}
                 </span>
                 <span className="flex items-center gap-2">
                   <Clock size={16} className="text-accent" />

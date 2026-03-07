@@ -1,51 +1,56 @@
 import { useState, useEffect } from 'react';
 
 interface BeforeInstallPromptEvent extends Event {
-  readonly platforms: Array<string>;
+  readonly platforms: string[];
   readonly userChoice: Promise<{
-    outcome: 'accepted' | 'dismissed',
-    platform: string
+    outcome: 'accepted' | 'dismissed';
+    platform: string;
   }>;
   prompt(): Promise<void>;
 }
 
 export function usePWA() {
-  const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isInstallable, setIsInstallable] = useState(false);
+  const [isInstalled, setIsInstalled] = useState(false);
 
   useEffect(() => {
     const handleBeforeInstallPrompt = (e: Event) => {
-      // Prevent the mini-infobar from appearing on mobile
       e.preventDefault();
-      // Stash the event so it can be triggered later.
-      setInstallPrompt(e as BeforeInstallPromptEvent);
+      setDeferredPrompt(e as BeforeInstallPromptEvent);
       setIsInstallable(true);
     };
 
+    const handleAppInstalled = () => {
+      setIsInstalled(true);
+      setIsInstallable(false);
+      setDeferredPrompt(null);
+    };
+
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    window.addEventListener('appinstalled', handleAppInstalled);
+
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+      setIsInstalled(true);
+    }
 
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      window.removeEventListener('appinstalled', handleAppInstalled);
     };
   }, []);
 
-  const promptInstall = async () => {
-    if (!installPrompt) {
-      return;
-    }
-    // Show the install prompt
-    await installPrompt.prompt();
-    // Wait for the user to respond to the prompt
-    const { outcome } = await installPrompt.userChoice;
+  const installApp = async () => {
+    if (!deferredPrompt) return;
+    
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    
     if (outcome === 'accepted') {
-      console.log('User accepted the install prompt');
-    } else {
-      console.log('User dismissed the install prompt');
+      setDeferredPrompt(null);
+      setIsInstallable(false);
     }
-    // We've used the prompt, and can't use it again, throw it away
-    setInstallPrompt(null);
-    setIsInstallable(false);
   };
 
-  return { isInstallable, promptInstall };
+  return { isInstallable, isInstalled, installApp };
 }

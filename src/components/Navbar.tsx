@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { motion, useScroll, useMotionValueEvent } from 'motion/react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Download } from 'lucide-react';
 import useSoundEffects from '../hooks/useSoundEffects';
-import PWAInstallButton from './PWAInstallButton';
+import { usePWA } from '../hooks/usePWA';
 
 const navItems = [
   { name: 'Home', href: '#home' },
@@ -17,6 +17,7 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { scrollY } = useScroll();
   const { playHover, playClick, playAppear, playSwoosh } = useSoundEffects();
+  const { isInstallable, installApp } = usePWA();
 
   const toggleMobileMenu = () => {
     const newState = !mobileMenuOpen;
@@ -74,16 +75,41 @@ export default function Navbar() {
               {item.name}
             </a>
           ))}
-          <PWAInstallButton />
+          {isInstallable && (
+            <button
+              onClick={() => {
+                playClick();
+                installApp();
+              }}
+              onMouseEnter={playHover}
+              className="flex items-center gap-2 text-sm font-medium bg-accent/10 text-accent hover:bg-accent hover:text-black px-4 py-2 rounded-full transition-all"
+            >
+              <Download size={16} />
+              <span>Install App</span>
+            </button>
+          )}
         </div>
 
         {/* Mobile Menu Toggle */}
-        <button 
-          className="md:hidden text-white"
-          onClick={toggleMobileMenu}
-        >
-          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        <div className="md:hidden flex items-center gap-4">
+          {isInstallable && (
+            <button
+              onClick={() => {
+                playClick();
+                installApp();
+              }}
+              className="text-accent bg-accent/10 p-2 rounded-full"
+            >
+              <Download size={20} />
+            </button>
+          )}
+          <button 
+            className="text-white"
+            onClick={toggleMobileMenu}
+          >
+            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu Overlay */}
@@ -109,9 +135,6 @@ export default function Navbar() {
               {item.name}
             </a>
           ))}
-          <div className="flex justify-center pt-2">
-            <PWAInstallButton />
-          </div>
         </motion.div>
       )}
     </motion.nav>

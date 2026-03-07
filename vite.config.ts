@@ -12,27 +12,29 @@ export default defineConfig(({mode}) => {
       tailwindcss(),
       VitePWA({
         registerType: 'autoUpdate',
-        devOptions: {
-          enabled: true
-        },
+        includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
         manifest: {
-          name: 'Naman Lahariya Portfolio',
+          name: 'Naman Lahariya',
           short_name: 'Naman',
-          description: 'Portfolio of Naman Lahariya',
+          description: 'Naman Lahariya - Portfolio',
           theme_color: '#050505',
           background_color: '#050505',
           display: 'standalone',
           icons: [
             {
-              src: '/icon.svg',
-              sizes: '512x512',
-              type: 'image/svg+xml',
-              purpose: 'any maskable'
+              src: '/logo.png',
+              sizes: '192x192',
+              type: 'image/png'
             },
             {
-              src: '/icon.svg',
-              sizes: '192x192',
-              type: 'image/svg+xml',
+              src: '/logo.png',
+              sizes: '512x512',
+              type: 'image/png'
+            },
+            {
+              src: '/logo.png',
+              sizes: '512x512',
+              type: 'image/png',
               purpose: 'any maskable'
             }
           ]
