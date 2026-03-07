@@ -9,6 +9,7 @@ export const blogPosts = [
     excerpt: 'Exploring how artificial intelligence is reshaping the way we build and interact with websites.',
     date: 'March 15, 2026',
     author: 'Naman Lahariya',
+    image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1000&auto=format&fit=crop',
     content: `
       Artificial Intelligence is rapidly transforming the landscape of web development. From automated code generation to intelligent user interfaces, AI is enabling developers to build faster, smarter, and more personalized web experiences.
 
@@ -28,6 +29,7 @@ export const blogPosts = [
     excerpt: 'Key strategies and best practices for building high-performance React applications.',
     date: 'February 28, 2026',
     author: 'Naman Lahariya',
+    image: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=1000&auto=format&fit=crop',
     content: `
       Performance is a critical factor in the success of any web application. In the React ecosystem, there are several strategies developers can employ to ensure their apps run smoothly.
 
@@ -47,6 +49,7 @@ export const blogPosts = [
     excerpt: 'How mathematical concepts are applied to solve complex problems in software engineering.',
     date: 'January 10, 2026',
     author: 'Naman Lahariya',
+    image: 'https://images.unsplash.com/photo-1509228468518-180dd4864904?q=80&w=1000&auto=format&fit=crop',
     content: `
       Mathematical modeling is the process of using mathematical structures to represent real-world situations. In the tech industry, this is used for everything from algorithm design to system optimization.
 

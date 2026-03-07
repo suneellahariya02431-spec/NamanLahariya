@@ -2,9 +2,12 @@ import { motion } from 'motion/react';
 import { Github, Linkedin, Mail, MapPin, Download, ChevronDown } from 'lucide-react';
 import { ReactNode, useEffect } from 'react';
 import useSoundEffects from '../hooks/useSoundEffects';
+import { useSiteData } from '../context/SiteContext';
+import EditableField from './EditableField';
 
 export default function Hero() {
   const { playSwoosh, playHover, playClick, playAppear } = useSoundEffects();
+  const { siteData } = useSiteData();
 
   useEffect(() => {
     playSwoosh();
@@ -29,14 +32,14 @@ export default function Hero() {
         >
           <div className="w-40 h-40 md:w-48 md:h-48 rounded-2xl overflow-hidden border-2 border-white/10 shadow-2xl mx-auto relative z-10 bg-[#1a1a1a]">
              <img 
-               src="https://github.com/namanartist.png" 
-               alt="Naman Lahariya" 
+               src={siteData.avatarUrl} 
+               alt={siteData.name} 
                className="w-full h-full object-cover"
                referrerPolicy="no-referrer"
                onError={(e) => {
                  const target = e.currentTarget;
                  // Fallback to generic avatar if GitHub fails
-                 target.src = "https://ui-avatars.com/api/?name=Naman+Lahariya&background=random";
+                 target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(siteData.name)}&background=random`;
                }}
              />
           </div>
@@ -51,7 +54,7 @@ export default function Hero() {
           transition={{ delay: 0.2, duration: 0.8 }}
           className="text-4xl md:text-6xl lg:text-7xl font-serif font-bold mb-4"
         >
-          Hi! I'm <span className="text-accent italic">Naman Lahariya</span>
+          Hi! I'm <EditableField field="name"><span className="text-accent italic">{siteData.name}</span></EditableField>
         </motion.h1>
 
         <motion.p
@@ -60,8 +63,12 @@ export default function Hero() {
           transition={{ delay: 0.4, duration: 0.8 }}
           className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-8 leading-relaxed"
         >
-          B.Tech in <span className="text-white font-medium">Mathematics and Computing</span> at <span className="text-white font-medium">MITS Gwalior</span>. 
-          Passionate about building intelligent digital solutions and contributing through hard work and adaptability.
+          <EditableField field="title" as="textarea" className="block mb-2">
+            <span className="text-white font-medium">{siteData.title}</span>
+          </EditableField>
+          <EditableField field="bio" as="textarea" className="block">
+            {siteData.bio}
+          </EditableField>
         </motion.p>
 
         <motion.div
@@ -71,22 +78,24 @@ export default function Hero() {
           className="flex flex-col md:flex-row items-center justify-center gap-4"
         >
           <div className="flex items-center gap-4">
-            <SocialLink href="https://github.com/namanartist" icon={<Github size={20} />} playHover={playHover} playClick={playClick} />
-            <SocialLink href="https://www.linkedin.com/in/naman-lahariya" icon={<Linkedin size={20} />} playHover={playHover} playClick={playClick} />
-            <SocialLink href="mailto:namanalahariya@gmail.com" icon={<Mail size={20} />} playHover={playHover} playClick={playClick} />
+            <SocialLink href={siteData.github} icon={<Github size={20} />} playHover={playHover} playClick={playClick} />
+            <SocialLink href={siteData.linkedin} icon={<Linkedin size={20} />} playHover={playHover} playClick={playClick} />
+            <SocialLink href={siteData.email} icon={<Mail size={20} />} playHover={playHover} playClick={playClick} />
           </div>
           
           <div className="h-px w-12 bg-white/10 hidden md:block" />
           
           <div className="flex items-center gap-2 text-sm text-gray-500">
             <MapPin size={16} className="text-accent" />
-            <span>Gwalior, India</span>
+            <EditableField field="location">
+              <span>{siteData.location}</span>
+            </EditableField>
           </div>
 
           <div className="h-px w-12 bg-white/10 hidden md:block" />
 
           <a 
-            href="https://drive.google.com/drive/folders/1T6Hf1ZuXB6IPZwF8xeG9zIZK1NUJWC7V?usp=sharing"
+            href={siteData.resumeLink}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 px-6 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-sm font-medium transition-all group"
