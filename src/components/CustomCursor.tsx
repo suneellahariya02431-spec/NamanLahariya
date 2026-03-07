@@ -51,7 +51,7 @@ export default function CustomCursor() {
           x: mousePosition.x - 20,
           y: mousePosition.y - 20,
           scale: isHovering ? 1.5 : 1,
-          backgroundColor: isHovering ? 'rgba(255, 215, 0, 0.1)' : 'transparent',
+          backgroundColor: isHovering ? 'rgba(255, 215, 0, 0.1)' : 'rgba(255, 215, 0, 0)',
         }}
         transition={{ type: 'spring', stiffness: 150, damping: 15, mass: 0.5 }}
       />
